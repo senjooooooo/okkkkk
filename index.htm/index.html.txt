@@ -1,0 +1,207 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MB Barbecue — Tangier</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<!-- Main CSS -->
+<link rel="stylesheet" href="style.css">
+
+<!-- Three.js (for simple 3D skewer) -->
+<script src="https://unpkg.com/three@0.148.0/build/three.min.js" defer></script>
+<!-- Our script (deferred to run after HTML and Three.js load) -->
+<script src="script.js" defer></script>
+</head>
+<body>
+<!-- NAVBAR -->
+<header class="site-header">
+<div class="container nav">
+<div class="brand">MB Barbecue <span class="small">Tangier</span></div>
+<nav class="nav-links" id="navLinks">
+<a href="#home">Home</a>
+<a href="#menu">Menu</a>
+<a href="#about">Our Story</a>
+<a href="#contact">Contact</a>
+</nav>
+<button class="btn-book" id="openBooking">Book Now</button>
+<button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+</div>
+</header>
+
+<!-- HERO -->
+<section id="home" class="hero">
+<div class="hero-content container">
+<div class="hero-text">
+<h1>MB Barbecue</h1>
+<p class="tagline">Authentic BBQ in Tangier — flame, flavor, family.</p>
+<div class="hero-cta">
+<button class="btn-primary" id="openBooking2">Book a Table</button>
+<a class="btn-ghost" href="https://www.google.com/maps?q=MB+Barbecue+Tangier" target="_blank" rel="noopener">View on Map</a>
+</div>
+</div>
+
+<!-- 3D canvas for rotating skewer -->
+<div class="hero-3d">
+<canvas id="skewerCanvas" aria-hidden="true"></canvas>
+<noscript><img src="https://source.unsplash.com/600x400/?barbecue,grill" alt="MB Barbecue"></noscript>
+</div>
+</div>
+</section>
+
+<!-- MENU -->
+<section id="menu" class="section">
+<div class="container section-head">
+<h2>Our Menu</h2>
+<p>Signature grills and local flavors — prices in MAD.</p>
+</div>
+
+<div class="container menu-grid">
+<!-- Each item uses Unsplash dynamic photos; change to your own images if you have them -->
+<article class="menu-item">
+<img loading="lazy" src="https://source.unsplash.com/600x400/?grilled-meat" alt="Grilled Lamb Chops">
+<div class="menu-body">
+<h3>Grilled Lamb Chops</h3>
+<p>Marinated with local spices and grilled over charcoal.</p>
+<span class="price">160 MAD</span>
+</div>
+</article>
+
+<article class="menu-item">
+<img loading="lazy" src="https://source.unsplash.com/600x400/?chicken-skewers" alt="Chicken Skewers">
+<div class="menu-body">
+<h3>Chicken Skewers</h3>
+<p>Succulent chicken with garlic and cumin, served with bread.</p>
+<span class="price">90 MAD</span>
+</div>
+</article>
+
+<article class="menu-item">
+<img loading="lazy" src="https://source.unsplash.com/600x400/?beef-ribs" alt="Beef Ribs">
+<div class="menu-body">
+<h3>Beef Ribs</h3>
+<p>Slow-cooked, smoky ribs glazed with our special sauce.</p>
+<span class="price">180 MAD</span>
+</div>
+</article>
+
+<article class="menu-item">
+<img loading="lazy" src="https://source.unsplash.com/600x400/?grilled-veg" alt="Grilled Vegetables">
+<div class="menu-body">
+<h3>Moroccan Grilled Veg</h3>
+<p>Seasonal vegetables charred and seasoned with olive oil.</p>
+<span class="price">60 MAD</span>
+</div>
+</article>
+
+<article class="menu-item">
+<img loading="lazy" src="https://source.unsplash.com/600x400/?mixed-platter,bbq" alt="Mixed Platter">
+<div class="menu-body">
+<h3>Mixed Platter</h3>
+<p>Perfect to share: cuts of lamb, chicken, and vegetables.</p>
+<span class="price">260 MAD</span>
+</div>
+</article>
+
+<article class="menu-item">
+<img loading="lazy" src="https://source.unsplash.com/600x400/?baklava,dessert" alt="Dessert">
+<div class="menu-body">
+<h3>Classic Moroccan Dessert</h3>
+<p>A sweet finish — ask about today’s selection.</p>
+<span class="price">35 MAD</span>
+</div>
+</article>
+</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section about">
+<div class="container about-grid">
+<div class="about-text">
+<h2>Our Story</h2>
+<p>MB Barbecue began in Tangier to bring family-style barbecue and local ingredients to every table. We cook over charcoal, source fresh produce from local markets, and serve with warm Tangier hospitality.</p>
+<ul>
+<li>Family recipes</li>
+<li>Fresh, local ingredients</li>
+<li>Warm and relaxed atmosphere</li>
+</ul>
+</div>
+<div class="about-photo">
+<img loading="lazy" src="https://source.unsplash.com/600x500/?chef,barbecue" alt="MB Barbecue atmosphere">
+</div>
+</div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section contact">
+<div class="container">
+<h2>Contact & Location</h2>
+<div class="contact-grid">
+<form id="contactForm" class="contact-form" action="#" onsubmit="return false;">
+<label>
+<span>Your name</span>
+<input type="text" name="name" required>
+</label>
+<label>
+<span>Email</span>
+<input type="email" name="email" required>
+</label>
+<label>
+<span>Message</span>
+<textarea name="message" rows="4" required></textarea>
+</label>
+<button class="btn-primary" type="submit" id="sendMsg">Send Message</button>
+</form>
+
+<div class="contact-info">
+<p><strong>MB Barbecue</strong><br> Boukhalef, Tangier</p>
+<p><strong>Hours:</strong> Tue–Sun 13:00–23:00 (closed Mon)</p>
+<p><strong>Phone:</strong> +212 X XX XXX XXXX</p>
+
+<!-- Google Maps embed (works without API key) -->
+<div class="map-wrap">
+<iframe
+title="MB Barbecue Tangier map"
+src="https://www.google.com/maps?q=MB+Barbecue+Tangier&output=embed"
+loading="lazy"></iframe>
+</div>
+
+<p class="small">Map link: <a href="https://maps.app.goo.gl/AyMPTUTNsYdGqSdb7" target="_blank" rel="noopener">Open in Maps</a></p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+<div class="container footer-grid">
+<div>© <span id="year"></span> MB Barbecue — Tangier</div>
+<div class="socials">
+<a href="#" aria-label="Instagram">Instagram</a>
+<a href="#" aria-label="Facebook">Facebook</a>
+</div>
+</div>
+</footer>
+
+<!-- BOOKING MODAL -->
+<div class="modal" id="bookingModal" aria-hidden="true">
+<div class="modal-inner" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+<button class="modal-close" id="closeBooking" aria-label="Close">✕</button>
+<h3 id="modalTitle">Book a Table</h3>
+<form id="bookingForm" onsubmit="return false;">
+<label><span>Name</span><input type="text" name="book_name" required></label>
+<label><span>Phone or Email</span><input type="text" name="book_contact" required></label>
+<label><span>Date & Time</span><input type="datetime-local" name="book_datetime" required></label>
+<label><span>Guests</span><input type="number" name="book_guests" min="1" value="2" required></label>
+<button class="btn-primary" id="bookSubmit">Send Booking</button>
+</form>
+</div>
+</div>
+
+</body>
+</html>
+

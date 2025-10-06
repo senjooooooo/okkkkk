@@ -1,0 +1,153 @@
+/* script.js — interactions for MB Barbecue
+- Simple Three.js rotating skewer (fallback to image if no WebGL)
+- Smooth scroll + fade-in on scroll
+- Booking modal open/close and basic form stubs
+*/
+
+document.addEventListener('DOMContentLoaded', () => {
+// year in footer
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// NAV toggle mobile
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+navToggle?.addEventListener('click', () => {
+navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+});
+
+// Smooth scroll for internal links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+a.addEventListener('click', (e) => {
+const href = a.getAttribute('href');
+if (href.length > 1) {
+e.preventDefault();
+const target = document.querySelector(href);
+if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
+}
+});
+});
+
+// Fade-in on scroll
+const observer = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+if (entry.isIntersecting) {
+entry.target.classList.add('in-view');
+}
+});
+}, {threshold: 0.15});
+
+document.querySelectorAll('.section, .menu-item, .about-photo, .hero-text').forEach(el => observer.observe(el));
+
+// Booking modal
+const bookingModal = document.getElementById('bookingModal');
+const openBooking = document.getElementById('openBooking');
+const openBooking2 = document.getElementById('openBooking2');
+const closeBooking = document.getElementById('closeBooking');
+
+function showModal() {
+bookingModal.setAttribute('aria-hidden', 'false');
+document.body.style.overflow = 'hidden';
+}
+function hideModal() {
+bookingModal.setAttribute('aria-hidden', 'true');
+document.body.style.overflow = '';
+}
+
+openBooking?.addEventListener('click', showModal);
+openBooking2?.addEventListener('click', showModal);
+closeBooking?.addEventListener('click', hideModal);
+bookingModal?.addEventListener('click', (e) => {
+if (e.target === bookingModal) hideModal();
+});
+
+// Stub: handle booking submission (you can integrate with server or email)
+document.getElementById('bookingForm')?.addEventListener('submit', (e) => {
+e.preventDefault();
+// Here you would send booking to server or email
+alert('Thank you! Your booking request has been sent (demo).');
+hideModal();
+});
+
+// Contact form stub
+document.getElementById('contactForm')?.addEventListener('submit', (e) => {
+e.preventDefault();
+alert('Message sent — we will contact you soon (demo).');
+});
+
+
+/* ------------- Simple Three.js rotating skewer ------------- */
+// Minimal scene: a cylinder (skewer) with small spheres (meat) rotating slowly.
+// If WebGL not available, skip silently.
+try {
+const canvas = document.getElementById('skewerCanvas');
+if (canvas && window.THREE) {
+const width = canvas.clientWidth || 340;
+const height = canvas.clientHeight || 220;
+const renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true});
+renderer.setSize(width, height);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, width/height, 0.1, 1000);
+camera.position.set(0, 1.2, 3);
+
+// light
+const ambient = new THREE.AmbientLight(0xffffff, 0.8);
+scene.add(ambient);
+const dir = new THREE.DirectionalLight(0xffe6b3, 0.6);
+dir.position.set(5,5,5);
+scene.add(dir);
+
+// skewer (long thin cylinder)
+const skewerMat = new THREE.MeshStandardMaterial({color:0x6b4f2a, metalness:0.6, roughness:0.4});
+const skewerGeo = new THREE.CylinderGeometry(0.03, 0.03, 2.0, 12);
+const skewer = new THREE.Mesh(skewerGeo, skewerMat);
+skewer.rotation.z = Math.PI / 2;
+scene.add(skewer);
+
+// create few "meat" spheres along the skewer
+const meatMat = new THREE.MeshStandardMaterial({color:0x8b2b1a, metalness:0.2, roughness:0.7});
+for (let i = -0.6; i <= 0.6; i += 0.6) {
+const g = new THREE.SphereGeometry(0.22, 20, 16);
+const m = new THREE.Mesh(g, meatMat);
+m.position.set(0, i, 0);
+scene.add(m);
+}
+
+// small plate under skewer - disk
+const plateMat = new THREE.MeshStandardMaterial({color:0x222222, metalness:0.3, roughness:0.9});
+const plateGeo = new THREE.CylinderGeometry(1.0, 1.0, 0.05, 24);
+const plate = new THREE.Mesh(plateGeo, plateMat);
+plate.position.set(0, 0, -0.9);
+scene.add(plate);
+
+// auto-rotate group
+const group = new THREE.Group();
+group.add(skewer);
+group.add(plate);
+scene.add(group);
+
+// responsive resize
+window.addEventListener('resize', () => {
+const w = canvas.clientWidth;
+const h = canvas.clientHeight;
+renderer.setSize(w, h);
+camera.aspect = w/h;
+camera.updateProjectionMatrix();
+});
+
+// animation loop
+const clock = new THREE.Clock();
+function animate() {
+requestAnimationFrame(animate);
+const t = clock.getElapsedTime();
+group.rotation.y = 0.25 * Math.sin(t * 0.4) + t * 0.08; // slow rotation with small wobble
+renderer.render(scene, camera);
+}
+animate();
+}
+} catch (err) {
+// ignore WebGL errors silently (fallback image exists)
+console.warn('3D skewer skipped', err);
+}
+});
